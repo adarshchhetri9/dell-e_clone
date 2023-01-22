@@ -18,9 +18,16 @@ const CreatePost = () => {
 
   const generateImage = () => {};
 
-  const handleSubmit = () => {};
-  const handleChange = (e) => {};
-  const handleSurpeiseMe = () => {};
+  const handleSubmit = () => { };
+  
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  }
+
+  const handleSurpeiseMe = () => {
+      const randomPrompt = getRandomPrompt(form.prompt);
+        setForm({ ...form, prompt: randomPrompt  });
+  };
 
   return (
     <section className="max-w-7xl mx-auto ">
@@ -49,8 +56,9 @@ const CreatePost = () => {
             value={form.prompt}
             handleChange={handleChange}
             isSurpriseMe
-            handleSurpeiseMe={handleSurpeiseMe}
+            handleSurpriseMe={handleSurpeiseMe}
           />
+
           <div className="relative bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-64 p-3 h-64 flex justify-center items-center">
             {form.photo ? (
               <img
@@ -84,14 +92,16 @@ const CreatePost = () => {
           </button>
         </div>
 
-        <div className="mt-10 gap-5 flex ">
-          <p className="mt-2 ">Once you have created the image you want you can share it with the community </p>
+        <div className="mt-10">
+          <p className="mt-2 text-[#666e75] text-[14px] ">
+            Once you have created the image you want you can share it with the
+            community{" "}
+          </p>
           <button
-            type="button"
-            onClick={generateImage}
-            className="text-white bg-violet-500 font-medium rounded-md text-sm w-full sm:w-auto text-center px-5 py-2.5 "
+            type="submit"
+            className="mt-3 text-white bg-[#6469ff] font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center "
           >
-            {generatingImg ? "Generating..." : "Submit"}
+            {loading ? "Sharing" : "Share With the community "}
           </button>
         </div>
       </form>
