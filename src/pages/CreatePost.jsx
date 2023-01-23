@@ -20,10 +20,10 @@ const CreatePost = () => {
     if (form.prompt) {
       try {
         setGeneratingImg(true);
-        const response = await fetch('http://localhost:8080/api/v1/dalle', {
-          method: 'POST',
+        const response = await fetch("http://localhost:8080/api/v1/dalle", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             prompt: form.prompt,
@@ -38,19 +38,46 @@ const CreatePost = () => {
         setGeneratingImg(false);
       }
     } else {
-      alert('Waiting for prompt');
+      alert("Waiting for prompt");
     }
   };
 
-  const handleSubmit = () => { };
-  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (form.prompt && form.photo) {
+      setLoading(true);
+      try {
+        const response = await fetch('http://localhost:8080/api/v1/post', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ ...form }),
+        });
+
+        const r =await response.json();
+        console.log(r);
+        alert('Success');
+        navigate('/');
+      } catch (err) {
+        alert(err);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      alert('Please generate an image with proper details');
+    }
+  };
+
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
-  }
+  };
 
   const handleSurpeiseMe = () => {
-      const randomPrompt = getRandomPrompt(form.prompt);
-        setForm({ ...form, prompt: randomPrompt  });
+    const randomPrompt = getRandomPrompt(form.prompt);
+    setForm({ ...form, prompt: randomPrompt });
   };
 
   return (
@@ -68,7 +95,7 @@ const CreatePost = () => {
             labelName="Your name"
             type="text"
             name="name"
-            placeholder="Adarsh Chhetri"
+            placeholder="Tero nam lik ya ma"
             value={form.name}
             handleChange={handleChange}
           />
@@ -76,7 +103,7 @@ const CreatePost = () => {
             labelName="Prompt"
             type="text"
             name="prompt"
-            placeholder="Magic is on the way"
+            placeholder="J ko photo chaiyeko cha tesko nam likh"
             value={form.prompt}
             handleChange={handleChange}
             isSurpriseMe
